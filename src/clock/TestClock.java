@@ -22,7 +22,7 @@ public class TestClock {
         BufferedReader br = new BufferedReader(isr);
         String input = null;
         do {
-            System.out.println("\nPlease insert an hour using the correct format (hh:mm:ss) or enter the word exit to leave:");
+            System.out.println("\nPlease insert a new hour using the format (hh:mm:ss) or enter the word exit to leave:");
             input = br.readLine();
             int[] hourArray = getHourArray(input);
             if (hourArray != null) {
@@ -61,13 +61,21 @@ public class TestClock {
     private static boolean validateInputHour(String[] hourArray) {
         boolean valid = false;
         if (hourArray.length == 3) {
-            int hours = Integer.parseInt(hourArray[0]);
-            int minutes = Integer.parseInt(hourArray[1]);
-            int seconds = Integer.parseInt(hourArray[2]);
-            if (hourArray[0].length() == 2 && hours >= 0 && hours <= 24 && 
-                    hourArray[1].length() == 2 && minutes >= 0 && minutes <= 59 &&
-                    hourArray[2].length() == 2 && seconds >= 0 && seconds <= 59 ) {
-                valid = true;
+            try {
+                int hours = Integer.parseInt(hourArray[0]);
+                int minutes = Integer.parseInt(hourArray[1]);
+                int seconds = Integer.parseInt(hourArray[2]);
+                if (hourArray[0].length() == 2 && hours >= 0 && hours <= 23 &&
+                        hourArray[1].length() == 2 && minutes >= 0 && minutes <= 59 &&
+                        hourArray[2].length() == 2 && seconds >= 0 && seconds <= 59 ) {
+                    valid = true;
+                } else if (hourArray[0].length() == 2 && hours == 24 &
+                        hourArray[1].length() == 2 && minutes == 0 &&
+                        hourArray[2].length() == 2 && seconds == 0) {
+                    valid = true;
+                }
+            } catch (NumberFormatException e) {
+                //Exception Handled and logged move on with valid = false
             }
         }
         return valid;
